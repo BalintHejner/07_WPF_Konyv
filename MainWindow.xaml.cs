@@ -22,18 +22,37 @@ namespace _07_WPF_Konyvek
     public partial class MainWindow : Window
     {
         List<Book> books = new List<Book>();
+        List<string> authors = new List<string>();
         public MainWindow()
         {
             InitializeComponent();
             loadBooks();
+            loadAuthors();
+        
+            CBO_authors.ItemsSource = authors;
+            CBO_authors.SelectedIndex = 0;
         }
 
         private void loadBooks()
         {
-            foreach (var row in File.ReadAllLines("booklist.csv").Skip(1))
+            foreach (var row in File.ReadAllLines("bookList.csv").Skip(1))
             {
                 books.Add(new Book(row));
             } 
         }
+
+
+        private void loadAuthors()
+        {
+            foreach (var oneBook in books)
+            {
+                if (!authors.Contains(oneBook.Author))
+                {
+                    authors.Add(oneBook.Author);
+                }
+            }
+            authors.Sort(); //remdezés
+        }
+
     }
 }
